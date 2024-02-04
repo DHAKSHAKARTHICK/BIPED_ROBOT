@@ -1,0 +1,284 @@
+#include <ArduinoGraphics.h> // Arduino_MKRRGB depends on ArduinoGraphics
+#include  <Arduino_MKRRGB.h>
+#include <Servo.h>
+
+Servo bracoE, pernaE, peE, bracoD,  pernaD, peD;
+
+byte y = 0;
+
+void setup() {
+  // initialize the display
+  MATRIX.begin();
+
+  // set the brightness, supported values are 0 - 255
+  MATRIX.brightness(10);
+
+  bracoE.attach(A1); //Brao esquerdo 170 alto, 80  baixo
+  pernaE.attach(A2); //Perna esquerda 170 frente, 80 meio, 0 tras
+  peE.attach(A3);  //P esquerdo 170 cima, 80 plano, 10 ponta de p
+  bracoD.attach(A4); //Brao direito  170 baixo, 80 alto
+  pernaD.attach(A5); //Perna direita 170 tras, 80 meio, 10  frente
+  peD.attach(A6); ////P direito 0 cima, 80 plano, 160 ponta de p
+
+  posInicial();
+  delay(2000);
+
+}
+void loop() {
+  
+  for (byte  x = 0; x < 5; x++) {
+    // set one pixel GREEN, using the stroke and point methods
+    MATRIX.beginDraw();
+    MATRIX.clear();
+    MATRIX.stroke(0, 0, 255);
+    //=======OLHO ABERTO======================
+    //Olho esquerdo
+    MATRIX.point(2,  1);
+    MATRIX.point(1, 2);
+    MATRIX.point(2, 2);
+    MATRIX.point(3,  2);
+    MATRIX.point(0, 3);
+    MATRIX.point(1, 3);
+    MATRIX.point(2,  3);
+    MATRIX.point(3, 3);
+    MATRIX.point(1, 4);
+    MATRIX.point(2,  4);
+    MATRIX.point(3, 4);
+    MATRIX.point(2, 5);
+    //Olho direito
+    MATRIX.point(8, 1);
+    MATRIX.point(7, 2);
+    MATRIX.point(8, 2);
+    MATRIX.point(9, 2);
+    MATRIX.point(7, 3);
+    MATRIX.point(8, 3);
+    MATRIX.point(9, 3);
+    MATRIX.point(10, 3);
+    MATRIX.point(7, 4);
+    MATRIX.point(8, 4);
+    MATRIX.point(9, 4);
+    MATRIX.point(8, 5);
+    MATRIX.endDraw();
+
+    delay(2000);
+
+    MATRIX.clear();
+
+    //=======OLHO NORMAL======================
+    //Olho esquerdo
+    MATRIX.point(1,  2);
+    MATRIX.point(2, 2);
+    MATRIX.point(3, 2);
+    MATRIX.point(0,  3);
+    MATRIX.point(1, 3);
+    MATRIX.point(2, 3);
+    MATRIX.point(3,  3);
+    MATRIX.point(1, 4);
+    MATRIX.point(2, 4);
+    MATRIX.point(3,  4);
+    //Olho direito
+    MATRIX.point(7, 2);
+    MATRIX.point(8, 2);
+    MATRIX.point(9, 2);
+    MATRIX.point(7, 3);
+    MATRIX.point(8, 3);
+    MATRIX.point(9, 3);
+    MATRIX.point(10, 3);
+    MATRIX.point(7, 4);
+    MATRIX.point(8, 4);
+    MATRIX.point(9, 4);
+    MATRIX.endDraw();
+
+    delay(30);
+
+    MATRIX.clear();
+
+    //=======OLHO FECHANDO======================
+    //Olho esquerdo
+    MATRIX.point(0, 3);
+    MATRIX.point(1, 3);
+    MATRIX.point(2,  3);
+    MATRIX.point(3, 3);
+    MATRIX.point(1, 4);
+    MATRIX.point(2,  4);
+    MATRIX.point(3, 4);
+    //Olho direito
+    MATRIX.point(7, 3);
+    MATRIX.point(8, 3);
+    MATRIX.point(9, 3);
+    MATRIX.point(10, 3);
+    MATRIX.point(7, 4);
+    MATRIX.point(8, 4);
+    MATRIX.point(9, 4);
+    MATRIX.endDraw();
+
+    delay(30);
+
+    MATRIX.clear();
+
+    //=======OLHO  FECHADO======================
+    //Olho esquerdo
+    MATRIX.point(1, 3);
+    MATRIX.point(2, 3);
+    MATRIX.point(3, 3);
+    MATRIX.point(2, 4);
+    //Olho direito
+    MATRIX.point(7, 3);
+    MATRIX.point(8, 3);
+    MATRIX.point(9,  3);
+    MATRIX.point(8, 4);
+    MATRIX.endDraw();
+
+    delay(30);
+
+    MATRIX.clear();
+
+    //=======OLHO ESPREMIDO======================
+    //Olho esquerdo
+    MATRIX.point(1, 3);
+    MATRIX.point(2, 3);
+    MATRIX.point(3,  3);
+    //Olho direito
+    MATRIX.point(7, 3);
+    MATRIX.point(8, 3);
+    MATRIX.point(9, 3);
+    MATRIX.endDraw();
+
+    delay(130);
+    //  clear the display
+    MATRIX.beginDraw();
+    MATRIX.noFill();
+    MATRIX.noStroke();
+    MATRIX.clear();
+    MATRIX.endDraw();
+  }
+  y=1;
+  while (y > 0)  {
+    passoEsquerdo(60, 60, 50, 1000);
+    passoDireito(110, 120, 100, 1000);
+    if (y == 4) {
+      y = 0;
+      posInicial();
+      delay(2000);
+      //=======OLHO RAIVA======================
+      MATRIX.beginDraw();
+      MATRIX.clear();
+      MATRIX.stroke(255, 0, 0);
+      //Olho esquerdo
+      MATRIX.point(0, 2);
+      MATRIX.point(1, 2);
+      MATRIX.point(2,  2);
+      MATRIX.point(3, 2);
+      MATRIX.point(0, 3);
+      MATRIX.point(1,  3);
+      MATRIX.point(2, 3);
+      MATRIX.point(0, 4);
+      MATRIX.point(1,  4);
+      //Olho direito
+      MATRIX.point(7, 2);
+      MATRIX.point(8,  2);
+      MATRIX.point(9, 2);
+      MATRIX.point(10, 2);
+      MATRIX.point(8,  3);
+      MATRIX.point(9, 3);
+      MATRIX.point(10, 3);
+      MATRIX.point(9,  4);
+      MATRIX.point(10, 4);
+      MATRIX.endDraw();
+      malhando();
+    }
+  }
+}
+
+void posInicial() {
+  bracoE.write(80);
+  pernaE.write(72);
+  peE.write(80);
+  bracoD.write(170);
+  pernaD.write(80);
+  peD.write(80);
+}
+
+int  passoEsquerdo(int levantarCorpo, int enpurrarPeOposto, int girarCorpo, int tempo)  {
+  peD.write(levantarCorpo);
+  peE.write(enpurrarPeOposto);
+  delay(tempo);
+  pernaD.write(girarCorpo);
+  delay(tempo);
+  posInicial();
+  delay(tempo);
+}
+
+int  passoDireito(int levantarCorpo, int enpurrarPeOposto, int girarCorpo, int tempo)  {
+  peD.write(levantarCorpo);
+  peE.write(enpurrarPeOposto);
+  delay(tempo);
+  pernaD.write(girarCorpo);
+  delay(tempo);
+  posInicial();
+  delay(tempo);
+  y++;
+}
+
+void malhando() {
+  bracoE.write(170);
+  bracoD.write(80);
+  delay(1000);
+  bracoE.write(80);
+  bracoD.write(170);
+  delay(1000);
+  bracoE.write(170);
+  bracoD.write(80);
+  peE.write(20);
+  peD.write(150);
+  delay(2000);
+  bracoE.write(170);
+  bracoD.write(80);
+  peE.write(80);
+  peD.write(80);
+  delay(2000);
+  bracoE.write(80);
+  bracoD.write(170);
+  peE.write(20);
+  peD.write(150);
+  delay(2000);
+  bracoE.write(170);
+  bracoD.write(80);
+  peE.write(80);
+  peD.write(80);
+  delay(2000);
+  bracoE.write(80);
+  bracoD.write(170);
+  peE.write(20);
+  peD.write(150);
+  delay(2000);
+  bracoE.write(170);
+  bracoD.write(80);
+  peE.write(80);
+  peD.write(80);
+  delay(2000);
+  bracoE.write(80);
+  bracoD.write(170);
+  peE.write(20);
+  peD.write(150);
+  delay(2000);
+  bracoE.write(170);
+  bracoD.write(80);
+  peE.write(80);
+  peD.write(80);
+  delay(2000);
+  bracoE.write(80);
+  bracoD.write(170);
+  peE.write(20);
+  peD.write(150);
+  delay(2000);
+  bracoE.write(170);
+  bracoD.write(80);
+  peE.write(80);
+  peD.write(80);
+  delay(2000);
+  posInicial();
+  MATRIX.clear();
+  delay(2000);
+  
+}
